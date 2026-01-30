@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For My Love ❤️🌹💖</title>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      text-align: center;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      margin: 25px 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    button {
+      padding: 15px 30px;
+      border: none;
+      background: #ff4d6d;
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ff758f;
+    }
+
+    /* SLIDESHOW */
+    .slideshow {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+      border-radius: 20px;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    /* HEART */
+    .heart {
+      font-size: 64px;
+      cursor: pointer;
+      user-select: none;
+      margin: 20px 0;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* LOVE MESSAGE */
+    #love-message {
+      position: fixed;
+      font-size: 2.5rem;
+      color: #ff4d6d;
+      font-weight: bold;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+      font-family: cursive;
+    }
+
+    footer {
+      margin-top: 30px;
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      #love-message { font-size: 2rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>For You, My Love ❤️🌹💖</h1>
+  <p>A little world made just for you 💕</p>
+
+  <!-- SLIDESHOW -->
+  <div class="card">
+    <h2>📸 Our Memories</h2>
+    <div class="slideshow">
+      <img src="images/1.jpg" class="slide active">
+      <img src="images/2.jpg" class="slide">
+      <img src="images/3.jpg" class="slide">
+      <img src="images/4.jpg" class="slide">
+      <img src="images/5.jpg" class="slide">
+      <img src="images/6.jpg" class="slide">
+    </div>
+  </div>
+
+  <!-- HEART -->
+  <div class="card">
+    <h2>Tap the Heart 💖</h2>
+    <p>Go on… tap it 💘</p>
+    <div class="heart" onclick="heartPop()">❤️💖💘</div>
+  </div>
+
+  <!-- POEMS -->
+  <div class="card">
+    <h2>📖 My Poems for You</h2>
+    <p>Click below to read poems written just for you 💌</p>
+    <button onclick="openPoems()">Read My Poems ❤️</button>
+  </div>
+
+  <!-- MESSAGE -->
+  <div class="card">
+    <h2>💌 From My Heart</h2>
+    <p>
+      Every moment with you feels like a blessing 🌹  
+      You are my calm, my chaos, my home 💞
+    </p>
+  </div>
+
+  <footer>
+    Made with endless love 💖✨
+  </footer>
+</div>
+
+<div id="love-message"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* CONFETTI ON LOAD */
+  confetti({
+    particleCount: 200,
+    spread: 100,
+    origin: { y: 0.6 }
+  });
+
+  /* SLIDESHOW */
+  const slides = document.querySelectorAll(".slide");
+  let index = 0;
+
+  setInterval(() => {
+    slides[index].classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+  }, 4000);
+
+});
+
+/* HEART POP */
+const messages = [
+  "I love you mutu ❤️🌹",
+  "Forever us 💖",
+  "My heart chose you 💘",
+  "Always you 🌹",
+  "You are my everything 💞"
+];
+
+function heartPop() {
+  const msg = document.getElementById("love-message");
+  msg.innerText = messages[Math.floor(Math.random() * messages.length)];
+
+  msg.style.left = Math.random() * 60 + 20 + "%";
+  msg.style.top = Math.random() * 60 + 20 + "%";
+  msg.style.opacity = 1;
+
+  confetti({
+    particleCount: 120,
+    spread: 70,
+    colors: ['#ff4d6d', '#ff758f', '#ffd6e0']
+  });
+
+  setTimeout(() => msg.style.opacity = 0, 2000);
+}
+
+/* POEMS PAGE */
+function openPoems() {
+  window.location.href = "poems.htm";
+}
+</script>
+
+</body>
+</html>
