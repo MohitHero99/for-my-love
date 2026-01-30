@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Poems for You ❤️📜</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.book {
+  width: 90%;
+  max-width: 650px;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+h1 {
+  color: #ff4d6d;
+  margin-bottom: 20px;
+}
+
+.page {
+  min-height: 260px;
+  font-size: 1.2rem;
+  white-space: pre-wrap;
+  opacity: 0;
+  transform: rotateY(20deg);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.page.active {
+  opacity: 1;
+  transform: rotateY(0deg);
+}
+
+.controls {
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 15px;
+  background: #ff4d6d;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-number {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="book">
+  <h1>My Poems for You 💖📜</h1>
+
+  <div id="page" class="page"></div>
+
+  <div class="controls">
+    <button id="prev">⬅ Previous</button>
+    <button id="next">Next ➡</button>
+  </div>
+
+  <div id="pageNumber" class="page-number"></div>
+</div>
+
+<script>
+let poems = [];
+let currentPage = 0;
+
+const pageDiv = document.getElementById("page");
+const prevBtn = document.getElementById("prev");
+const nextBtn = document.getElementById("next");
+const pageNumber = document.getElementById("pageNumber");
+
+/* LOAD INDEX */
+fetch("poems/index.json")
+  .then(res => res.json())
+  .then(files => Promise.all(
+    files.map(f => fetch("poems/" + f).then(r => r.text()))
+  ))
+  .then(texts => {
+    poems = texts.map(t => t.trim());
+    showPage(0);
+  })
+  .catch(err => {
+    pageDiv.textContent = "Poems could not be loaded 💔";
+    console.error(err);
+  });
+
+function showPage(index) {
+  pageDiv.classList.remove("active");
+
+  setTimeout(() => {
+    pageDiv.textContent = poems[index];
+    pageDiv.classList.add("active");
+    pageNumber.textContent = `Page ${index + 1} of ${poems.length}`;
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === poems.length - 1;
+  }, 200);
+}
+
+prevBtn.onclick = () => {
+  if (currentPage > 0) {
+    currentPage--;
+    showPage(currentPage);
+  }
+};
+
+nextBtn.onclick = () => {
+  if (currentPage < poems.length - 1) {
+    currentPage++;
+    showPage(currentPage);
+  }
+};
+</script>
+
+</body>
+</html>
